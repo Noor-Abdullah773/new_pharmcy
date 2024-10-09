@@ -8,4 +8,6 @@ class ApiUrls {
   static const String approvedCategory ="https://drug.actnow-ye.com/api/drugs?status=approved";
   static const String pendingCategory ="https://drug.actnow-ye.com/api/drugs?status=pending";
   static const String rejectedCategory ="https://drug.actnow-ye.com/api/drugs?status=rejected";
+  static const String requestDrug ="https://drug.actnow-ye.com/api/drug-requests";
+  static const String userDonation ="https://drug.actnow-ye.com/api/user-drugs";
 }

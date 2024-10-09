@@ -27,15 +27,15 @@ class _DonationFormState extends State<DonationForm> {
   final TextEditingController typeController = TextEditingController();
 
   final TextEditingController expireDateController = TextEditingController();
-  File? _image;
-  
+  File? fileimage;
+  late XFile? image;
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+     image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       setState(() {
-        _image = File(image.path);
+       fileimage = File(image!.path);
       });
     }
   }
@@ -76,9 +76,9 @@ class _DonationFormState extends State<DonationForm> {
                       width: 150,
                       height: 100,
                       color: Colors.grey,
-                      child: _image == null
+                      child: fileimage == null
                                   ? Text('No image selected.')
-                                  : Image.file(File(_image!.path)),
+                                  : Image.file(File(fileimage!.path)),
                     ),
                     onTap:pickImage,
                   ),

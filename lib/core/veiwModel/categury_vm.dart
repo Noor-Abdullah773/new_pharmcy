@@ -11,7 +11,7 @@ class CateguryVM with ChangeNotifier {
   bool isLoading = true;
   String? errorMessage;
 
-  CateguryVM() {
+  CateguryVM() { ///////// ايش الهدف
     getData();
   }
 

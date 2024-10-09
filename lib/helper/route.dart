@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmcy/core/models/catgury.dart';
+import 'package:pharmcy/core/models/donation.dart';
 import 'package:pharmcy/core/views/screens/cart_screen.dart';
 import 'package:pharmcy/core/views/screens/donait/donation_form.dart';
 import 'package:pharmcy/core/views/screens/donait/donation_list.dart';
@@ -16,6 +17,7 @@ import 'package:pharmcy/core/views/screens/authorization/splash_screen.dart';
 import 'package:pharmcy/core/views/screens/showCategory.dart';
 import 'package:pharmcy/core/views/screens/tap_drug.dart';
 
+import '../core/views/screens/cart.dart';
 import '../core/views/screens/test_categury.dart';
 
 class RouteManager {
@@ -61,6 +63,10 @@ class RouteManager {
       case '/showCategory':{
         Categury categury =settings.arguments as Categury;
          return MaterialPageRoute(builder: (ctx) => ShowCategory(c:categury),settings:settings);
+      }
+      case '/cart2':{
+        List<Donation> d =settings.arguments as List<Donation>;
+         return MaterialPageRoute(builder: (ctx) => Cart(donation:d),settings:settings);
       }
        
     }

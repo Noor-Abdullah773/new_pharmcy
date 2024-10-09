@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class Donation {
   String? name;
   int? quantity;
@@ -8,6 +10,7 @@ class Donation {
   int? userId;
   String? updatedAt;
   String? createdAt;
+ String? image;
   int? id;
 
   Donation(
@@ -20,6 +23,7 @@ class Donation {
       this.updatedAt,
       this.createdAt,
       this.id,
+      this.image,
       this.category_id});
 
   Donation.fromJson(Map<String, dynamic> json) {
@@ -33,6 +37,7 @@ class Donation {
     createdAt = json['created_at'];
     id = json['id'];
     category_id = json['category_id'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,6 +51,7 @@ class Donation {
     data['updated_at'] = this.updatedAt;
     data['created_at'] = this.createdAt;
     data['id'] = this.id;
+    data['image'] = this.image;
     data['category_id'] = this.category_id;
     return data;
   }

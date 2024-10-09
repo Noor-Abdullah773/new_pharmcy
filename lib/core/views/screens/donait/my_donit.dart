@@ -22,18 +22,18 @@ class MyDonit extends StatelessWidget {
         ),
         body: 
         
-           FutureBuilder(future:dvm.getData(ApiUrls.pendingCategory ),builder:(ctx,snapshot){
+           FutureBuilder(future:dvm.getmydonation(ApiUrls.userDonation ),builder:(ctx,snapshot){
         if(snapshot.connectionState==ConnectionState.done){
-           List<Donation>? userDA =snapshot.data?.where((element) => element.userId==usernum).toList();
-          if(userDA != null)
+          // List<Donation>? userDA =snapshot.data?.where((element) => element.userId==usernum).toList();
+          if(snapshot.data != null)
           {
             return ListView.builder(
-              itemCount:userDA!.length,
+              itemCount:snapshot.data!.length,
               itemBuilder: (context, index) {
                   return ListTile(
-                  title: Text('Name: ${userDA![index].name}'),
-                  subtitle: Text('Type: ${userDA![index].type}'),
-                  trailing:Text('Quantity: ${userDA![index].quantity}'),
+                  title: Text('Name: ${snapshot.data![index].name}'),
+                  subtitle: Text('Type: ${snapshot.data![index].type}'),
+                  trailing:Text('Quantity: ${snapshot.data![index].quantity}'),
                 );
               }
           );

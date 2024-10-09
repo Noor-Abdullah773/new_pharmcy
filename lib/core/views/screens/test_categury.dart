@@ -17,15 +17,7 @@ class CateguryView extends StatelessWidget {
       drawer: NavBar(),
       appBar: AppBar(
         title: const Text('Categories'),
-       /* leading: InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, '/home');
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black54,
-          ),
-        ),*/
+       
       ),
       body: Consumer<CateguryVM>(
         builder: (context, categuryVM, child) {
@@ -35,8 +27,7 @@ class CateguryView extends StatelessWidget {
 
           if (categuryVM.errorMessage != null) {
             return Center(child: Text(categuryVM.errorMessage!));
-          }
-
+          } 
           return InkWell(
             child: ListView.builder(
               itemCount: categuryVM.allCategury.length,

@@ -7,27 +7,58 @@ import '../../constant/api_url.dart';
 import '../../veiwModel/categury_vm.dart';
 import '../../veiwModel/donationvm.dart';
 
-class ShowCategory extends StatelessWidget {
+class ShowCategory extends StatefulWidget {
   late Categury c;
    ShowCategory({super.key,required this.c});
+
+  @override
+  State<ShowCategory> createState() => _ShowCategoryState();
+}
+
+class _ShowCategoryState extends State<ShowCategory> {
    DonationVM dvm = DonationVM();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(),
-      body:FutureBuilder(future:dvm.getData(ApiUrls.approvedCategory),builder:(ctx,snapshot){
+      appBar:AppBar(
+        actions: [
+          InkWell(
+            child: Container(margin:EdgeInsets.all(5),
+             child: Badge(child:Icon(Icons.shopping_cart),label:Text("${DonationVM.cart.length}"),)  
+            ),
+            onTap:(){
+              Navigator.pushNamed(context, "/cart2",arguments:DonationVM.cart);
+            },
+          )
+        ],
+      ),
+      body:
+      FutureBuilder(future:dvm.getData(ApiUrls.approvedCategory),builder:(ctx,snapshot){
         if(snapshot.connectionState==ConnectionState.done){
-           List<Donation>? specificCategory =snapshot.data?.where((element) => element.category_id==c.id).toList();
-           print(specificCategory!.length);
-          if(specificCategory.length>0)
+           List<Donation>? specificCategory =snapshot.data?.where((element) => element.category_id==widget.c.id).toList();
+          //  print(specificCategory!.length);
+          if(specificCategory!.length>0)
           {
             return ListView.builder(
               itemCount:specificCategory!.length,
               itemBuilder: (context, index) {
                   return ListTile(
                   title: Text('Name: ${specificCategory![index].name}'),
-                  subtitle: Text('Type: ${specificCategory![index].type}'),
+                  subtitle: Column(
+                    children: [
+                      Text('Type: ${specificCategory![index].type}'),
+                      Consumer(builder:(ctx,d,child){
+                       return IconButton(onPressed: (){
+                        DonationVM.addToCart(specificCategory![index]);
+                        print(DonationVM.cart.length);
+                        setState(() {
+
+                    });
+                      }, icon:Icon(Icons.add_shopping_cart));
+                      })
+                    ],
+                  ),
                   trailing:Text('Quantity: ${specificCategory![index].quantity}'),
                 );
               }
@@ -38,6 +69,7 @@ class ShowCategory extends StatelessWidget {
             return Center(child: Container(child: Text("لا توجد تبرعات")));}
 
         }
+       
         else
            {
             return CircularProgressIndicator();
