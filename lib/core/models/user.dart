@@ -72,4 +72,13 @@ class User {
 
     return registerInInfo;
   }
+  Future<Map<String, dynamic>> prfileData() async {
+    Map<String, dynamic> profileData = {};
+    profileData["city"] = city!;
+    profileData["bio"] = bio!;
+    profileData["phone"] = phone;
+    // if(avatar!=null)
+    //   profileData["avatar"] = await MultipartFile.fromFile(avatar!.path);
+    return profileData;
+  }
 }

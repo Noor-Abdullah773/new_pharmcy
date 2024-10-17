@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pharmcy/core/models/donation.dart';
+import 'package:pharmcy/core/models/drugRequest.dart';
 import 'package:pharmcy/core/views/widgets/button.dart';
+
+import '../../veiwModel/druqRequestVM.dart';
 
 class Cart extends StatefulWidget {
  late List<Donation> donation;
@@ -18,7 +21,9 @@ class _CartState extends State<Cart> {
     super.initState();
     controllers = List.generate(widget.donation.length, (index) => TextEditingController());
   }
-
+  DruqRequestVM dvm = DruqRequestVM();
+ List<Map<String,int>> itemCart=[];
+ Map<String,int> reqDrug = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +38,9 @@ class _CartState extends State<Cart> {
                         },
                         itemCount:widget.donation.length,
                         itemBuilder: (ctx, index) {
+                          reqDrug['drug_id']=widget.donation[index].id!;
+                          reqDrug['quantity']=int.parse(controllers[index].text);
+                          itemCart.add(reqDrug);
                           return ListTile(
                             //leading: ,
                             title:Column(
@@ -44,12 +52,34 @@ class _CartState extends State<Cart> {
                                   label: Text("الكمية المطلوبة")
                                 )
                                 ) 
+                                
                               ],
                             ),
                               );
                         }),
           ),
-          ButtonRounded(text:"ارسال", onTap:(){
+          ButtonRounded(text:"ارسال", onTap:()async{
+                     
+                      await dvm.sendDrug(itemCart);
+                        print(itemCart);
+                       
+                      if (dvm.errorMessage != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content:
+                                  Text('حدث خطأ: ${dvm.errorMessage}')),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('تم إرسال طلبك بنجاح!')),
+                        );
+
+                       /* nameController.clear();
+                        quantityController.clear();
+                        shapeController.clear();
+                        typeController.clear();
+                        expireDateController.clear();*/
+                      }
             
           })
         ],

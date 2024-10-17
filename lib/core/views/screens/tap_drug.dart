@@ -25,7 +25,8 @@ class AddDrug extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontFamily: 'myfont'),
           ),
         ),
-        body: Column(children: [
+        body: DonationForm(),
+         /*Column(children: [
           const TabBar(tabs: [
             Tab(
               text: 'معدات طبية',
@@ -48,7 +49,7 @@ class AddDrug extends StatelessWidget {
               DonationForm(),
             ]),
           )
-        ]),
+        ]),*/
       ),
     );
   }

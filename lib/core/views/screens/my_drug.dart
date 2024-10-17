@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pharmcy/core/veiwModel/druqRequestVM.dart';
+
+import '../../constant/api_url.dart';
 
 class MyDrug extends StatelessWidget {
-  const MyDrug({super.key});
-
+   MyDrug({super.key});
+DruqRequestVM dvm = DruqRequestVM();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 239, 237, 237),
+       backgroundColor: const Color.fromARGB(255, 188, 225, 210),
         appBar: AppBar(
           backgroundColor: const Color(0xff08685a),
           centerTitle: true,
@@ -16,8 +19,13 @@ class MyDrug extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontFamily: 'myfont'),
           ),
         ),
-        body: ListView.builder(
-          itemCount: 10,
+        body: FutureBuilder(future:dvm.getDrug(ApiUrls.userDrugs ),builder:(ctx,snapshot){
+          if(snapshot.connectionState==ConnectionState.done){
+
+             if(snapshot.data != null)
+             {
+               return ListView.builder(
+          itemCount:snapshot.data!.length,
           itemBuilder: (ctx, index) {
             return Padding(
               padding:
@@ -39,43 +47,48 @@ class MyDrug extends StatelessWidget {
                 child: ListTile(
                   leading: Padding(
                     padding: const EdgeInsets.only(left: 15, right: 30),
-                    //child: Image.asset('assets/icons/pharmacy(1).png'),
+                    child: Image.network('${snapshot.data![index].drug!.image!.path}')
+                    //Text('${snapshot.data![index].drug!.image!.path}'),
                   ),
                   title: Padding(
                     padding: const EdgeInsets.only(top: 6.0),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'اسم الدواء : ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text('دواء ضغط'),
-                      ],
-                    ),
-                  ),
+                    child: Text('${snapshot.data![index].drug!.name}'),),
+                    
                   subtitle: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6.0),
-                    child: Row(
+                    child: Column(//mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'الكمية : ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const Text(
-                          '6',
-                          style: TextStyle(
-                            fontSize: 17,
-                          ),
-                        ),
+                        SizedBox(height:5,),
+                         Text('${snapshot.data![index].quantity}',style: TextStyle(fontSize: 17,),),
+                       
                       ],
                     ),
                   ),
+                 trailing:Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                  snapshot.data![index].status== 'pending'
+                    ? Text("قيد الانتظار",style:TextStyle(color:Colors.grey),)
+                    : snapshot.data![index].status == 'approved'
+                    ? Text("مقبول",style:TextStyle(color:Colors.green),)
+                    : Text("مرفوض",style:TextStyle(color:Colors.red),), 
+                    Text('${snapshot.data![index].createdAt!.substring(0,10)}')
+                 ],)
                 ),
               ),
             );
           },
-        ),
+        );
+             }
+             return Center(child: Container(child: Text("لا توجد تبرعات"),width: 100,height: 100,color: Colors.blue,));
+          }
+           else
+           {
+            return Center(child: CircularProgressIndicator());
+           }
+        }
+        
       ),
+      )
     );
   }
 }

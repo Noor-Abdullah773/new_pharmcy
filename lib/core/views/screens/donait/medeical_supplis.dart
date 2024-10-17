@@ -1,13 +1,37 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pharmcy/core/models/donation.dart';
 import 'package:pharmcy/core/veiwModel/donationvm.dart';
 import 'package:pharmcy/core/views/widgets/button.dart';
 import 'package:pharmcy/core/views/widgets/medica_textform.dart';
 import 'package:provider/provider.dart';
 
-class MedicalSupplies extends StatelessWidget {
+class MedicalSupplies extends StatefulWidget {
+  @override
+  State<MedicalSupplies> createState() => _MedicalSuppliesState();
+}
+
+class _MedicalSuppliesState extends State<MedicalSupplies> {
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController quantityController = TextEditingController();
+
+  File? fileimage;
+
+  late XFile? image;
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+     image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+       fileimage = File(image!.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

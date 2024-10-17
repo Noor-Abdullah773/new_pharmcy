@@ -18,7 +18,9 @@ import 'package:pharmcy/core/views/screens/showCategory.dart';
 import 'package:pharmcy/core/views/screens/tap_drug.dart';
 
 import '../core/views/screens/cart.dart';
+import '../core/views/screens/profile_post.dart';
 import '../core/views/screens/test_categury.dart';
+import '../core/views/screens/update_profile.dart';
 
 class RouteManager {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -45,10 +47,14 @@ class RouteManager {
         return MaterialPageRoute(builder: (ctx) => AddDrug());
 
       case '/drugList':
-        return MaterialPageRoute(builder: (ctx) => DrugList());
+       { Categury categury =settings.arguments as Categury;
+         return MaterialPageRoute(builder: (ctx) => DrugList(c:categury),settings:settings);
+         }
 
       case '/cart':
-        return MaterialPageRoute(builder: (ctx) => CartScreen());
+        { List<Donation> d =settings.arguments as List<Donation>;
+          return MaterialPageRoute(builder: (ctx) => CartScreen(donation:d),settings:settings);
+        }
 
       case '/profile':
         return MaterialPageRoute(builder: (ctx) => Profile());
@@ -60,14 +66,18 @@ class RouteManager {
         return MaterialPageRoute(builder: (ctx) => DonationForm());
       case '/catgury_test':
         return MaterialPageRoute(builder: (ctx) => CateguryView());
-      case '/showCategory':{
+      /*case '/showCategory':{
         Categury categury =settings.arguments as Categury;
          return MaterialPageRoute(builder: (ctx) => ShowCategory(c:categury),settings:settings);
-      }
+      }*/
       case '/cart2':{
         List<Donation> d =settings.arguments as List<Donation>;
          return MaterialPageRoute(builder: (ctx) => Cart(donation:d),settings:settings);
       }
+       case '/postProfile':
+        return MaterialPageRoute(builder: (ctx) => ProfileScreen()); 
+      case '/updaeProfile':
+        return MaterialPageRoute(builder: (ctx) => ProfileUpdateScreen());
        
     }
   }

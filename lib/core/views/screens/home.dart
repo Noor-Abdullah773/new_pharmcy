@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
       child: Scaffold(
         drawer: NavBar(),
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+          backgroundColor:    const Color.fromARGB(255, 201, 222, 216),
           actions: [
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 70),
@@ -22,15 +22,12 @@ class Home extends StatelessWidget {
                 'الصفحة الرئيسة',
                 style: TextStyle(
                   fontFamily: 'myfont',
-                  fontSize: 20,
+                  fontSize: 25,
+                  color: Colors.black
                 ),
               ),
             ),
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/cart');
-                },
-                icon: Icon(Icons.shopping_cart)),
+           
           ],
         ),
         backgroundColor: const Color.fromARGB(255, 243, 243, 243),
@@ -48,8 +45,7 @@ class Home extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 5),
                       width: 300,
                       height: 150,
-                     // child: MarketingImages()
-                      ),
+                      child: MarketingImages()),
                   const Padding(
                     padding: EdgeInsets.all(15.0),
                     child: Row(
@@ -58,6 +54,8 @@ class Home extends StatelessWidget {
                         Text(
                           'الفئات و الأقسام',
                           style: TextStyle(
+                            // fontWeight: FontWeight.bold,
+                            fontFamily: 'myfont',
                             fontSize: 20,
                           ),
                         ),
@@ -65,7 +63,7 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   //caytgurys
-                  const AppGridList(),
+                  const AppGridList()
                 ],
               ),
             ),

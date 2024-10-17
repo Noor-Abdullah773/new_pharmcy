@@ -1,3 +1,5 @@
+import 'package:pharmcy/core/models/donation.dart';
+
 class DrugRequest {
   int? userId;
   int? drugId;
@@ -6,6 +8,7 @@ class DrugRequest {
   String? updatedAt;
   String? createdAt;
   int? id;
+  Donation? drug;
 
   DrugRequest(
       {this.userId,
@@ -14,7 +17,8 @@ class DrugRequest {
       this.status,
       this.updatedAt,
       this.createdAt,
-      this.id});
+      this.id,
+      this.drug});
 
   DrugRequest.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -24,6 +28,7 @@ class DrugRequest {
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
     id = json['id'];
+     drug= json['drug'] != null ? new Donation.fromJson(json['drug']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +40,9 @@ class DrugRequest {
     data['updated_at'] = this.updatedAt;
     data['created_at'] = this.createdAt;
     data['id'] = this.id;
+    if (this.drug != null) {
+      data['drug'] = this.drug!.toJson();
+    }
     return data;
   }
 }

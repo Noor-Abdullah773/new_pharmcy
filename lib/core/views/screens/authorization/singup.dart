@@ -97,11 +97,12 @@ class SingUpScreen extends StatelessWidget {
                       email: emailController.text,
                       password: passController.text,
                       password_confirmation: confirmpassController.text);
+                      print(userController.text); 
                   uvm.register(u, ApiUrls.registerinUrl).then((value) {
                     Navigator.pop(context);
                     if (value == "secssed")
                       // print("ok");
-                      Navigator.pushNamed(context, '/catgury_test');
+                      Navigator.pushNamed(context, '/home');
                     else {
                       return showDialog(
                           context: context,

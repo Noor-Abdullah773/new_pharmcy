@@ -10,4 +10,7 @@ class ApiUrls {
   static const String rejectedCategory ="https://drug.actnow-ye.com/api/drugs?status=rejected";
   static const String requestDrug ="https://drug.actnow-ye.com/api/drug-requests";
   static const String userDonation ="https://drug.actnow-ye.com/api/user-drugs";
+  static const String userDrugs ="https://drug.actnow-ye.com/api/drug-requests";
+  static const String profileUrl = 'https://drug.actnow-ye.com/api/profile';
+  static const String postProfile ='https://drug.actnow-ye.com/api/profile/update';
 }

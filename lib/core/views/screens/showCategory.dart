@@ -7,7 +7,7 @@ import '../../constant/api_url.dart';
 import '../../veiwModel/categury_vm.dart';
 import '../../veiwModel/donationvm.dart';
 
-class ShowCategory extends StatefulWidget {
+/*class ShowCategory extends StatefulWidget {
   late Categury c;
    ShowCategory({super.key,required this.c});
 
@@ -25,10 +25,12 @@ class _ShowCategoryState extends State<ShowCategory> {
         actions: [
           InkWell(
             child: Container(margin:EdgeInsets.all(5),
-             child: Badge(child:Icon(Icons.shopping_cart),label:Text("${DonationVM.cart.length}"),)  
+             child: Consumer<DonationVM>(builder:(ctx,d,child){
+              return Badge(child:Icon(Icons.shopping_cart),label:Text("${d.cart.length}"),)  ;
+             }) 
             ),
             onTap:(){
-              Navigator.pushNamed(context, "/cart2",arguments:DonationVM.cart);
+              Navigator.pushNamed(context, "/cart2",arguments:dvm.cart);
             },
           )
         ],
@@ -50,11 +52,11 @@ class _ShowCategoryState extends State<ShowCategory> {
                       Text('Type: ${specificCategory![index].type}'),
                       Consumer(builder:(ctx,d,child){
                        return IconButton(onPressed: (){
-                        DonationVM.addToCart(specificCategory![index]);
-                        print(DonationVM.cart.length);
-                        setState(() {
+                        dvm.addToCart(specificCategory![index]);
+                        print(dvm.cart.length);
+                       /* setState(() {
 
-                    });
+                    });*/
                       }, icon:Icon(Icons.add_shopping_cart));
                       })
                     ],
@@ -104,4 +106,4 @@ class _ShowCategoryState extends State<ShowCategory> {
       ), */
     );
   }
-}
+}*/

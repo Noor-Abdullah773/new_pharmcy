@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Donation {
   String? name;
@@ -10,8 +12,9 @@ class Donation {
   int? userId;
   String? updatedAt;
   String? createdAt;
- String? image;
+  XFile? image;
   int? id;
+String? status;
 
   Donation(
       {this.name,
@@ -24,7 +27,9 @@ class Donation {
       this.createdAt,
       this.id,
       this.image,
-      this.category_id});
+      this.status,
+      this.category_id,
+      });
 
   Donation.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -37,7 +42,8 @@ class Donation {
     createdAt = json['created_at'];
     id = json['id'];
     category_id = json['category_id'];
-    image = json['image'];
+    image =XFile(json['image']) ;
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -53,6 +59,18 @@ class Donation {
     data['id'] = this.id;
     data['image'] = this.image;
     data['category_id'] = this.category_id;
+    data['status'] = this.status;
     return data;
   }
+  Future< Map<String,dynamic>> medecineData()async{
+      Map<String,dynamic> SerData= {};
+      SerData["name"]=name!;
+      SerData["quantity"]=quantity!;
+      SerData["shape"]=shape!;
+      SerData["type"]=type!;
+      SerData["expireDate"]=expireDate!;
+      if(image!=null)
+      SerData["image"] = await MultipartFile.fromFile(image!.path);
+      return SerData;
+    }
 }

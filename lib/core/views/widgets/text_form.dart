@@ -22,7 +22,7 @@ class AppTextForm extends StatelessWidget {
       child: TextFormField(
         obscureText: obscure,
         controller: controller,
-        textAlign: TextAlign.end,
+        //textAlign: TextAlign.end,
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,

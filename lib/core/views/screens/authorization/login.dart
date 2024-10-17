@@ -70,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                       Navigator.pop(context);
                       if (value == "secssed")
                         // print("ok");
-                        Navigator.pushNamed(context, '/catgury_test');
+                        Navigator.pushNamed(context, '/home');
                       else {
                         return showDialog(
                             context: context,

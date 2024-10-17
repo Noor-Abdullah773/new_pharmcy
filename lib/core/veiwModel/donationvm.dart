@@ -1,8 +1,7 @@
-import 'dart:collection';
-import 'dart:io';
 
+import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pharmcy/core/constant/api_url.dart';
 import 'package:pharmcy/core/models/donation.dart';
 
@@ -16,10 +15,10 @@ class DonationVM with ChangeNotifier {
   String? errorMessage;
   String token = storageHelper.readKey("token");
 
- static List<Donation> cart = [];
-  static addToCart(Donation d){
+static List<Donation> cart = []; 
+ addToCart(Donation d){
     cart.add(d);
-   // notifyListeners();
+    notifyListeners();
   }
 
   Future<List<Donation>>getData(String url) async {
@@ -59,11 +58,10 @@ class DonationVM with ChangeNotifier {
     };
     try {
       Response res = await dio.get(url ,options:Options(headers: header) );
-      //print(res.data["data"]);
       List<dynamic> donation = res.data["data"]["drugs"];
-      print(res.data["data"]["drugs"]);
+      //print(res.data["data"]["drugs"]);
       donations = donation.map((element) => Donation.fromJson(element)).toList();
-      //print(donations[1].name!);
+      
       errorMessage = null;
     } catch (e) {
       errorMessage = 'Error: ${e.toString()}';
@@ -81,9 +79,10 @@ class DonationVM with ChangeNotifier {
 
     Dio dio = Dio();
     try {
-      Response res = await dio.post(ApiUrls.donationUrl,
-          data: donation.toJson(),
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
+       Map<String,dynamic> df=await donation.medecineData() ;
+       FormData formData = await FormData.fromMap(df);
+      Response res = await dio.post(ApiUrls.donationUrl,data:formData,options: Options(headers: {'Authorization': 'Bearer $token'}));
+        print(donation.toJson());
       if (res.statusCode == 200) {
         print('Sucsses');
         //donations.add(donation);
@@ -99,46 +98,6 @@ class DonationVM with ChangeNotifier {
       notifyListeners();
     }
   }
-  /*Future<void> sendDonation(Donation donation, {File? imageFile}) async {
-  isLoading = true;
-  notifyListeners();
-
-  Dio dio = Dio();
-  dio.options.followRedirects = true;
-  try {
-    // إنشاء FormData لإرسال البيانات
-    FormData formData = FormData();
-
-    // إضافة بيانات التبرع
-    formData.fields.add(MapEntry('donation', donation.toJson().toString()));
-
-    // إضافة الصورة إذا كانت موجودة
-    if (imageFile != null) {
-      formData.files.add(
-        MapEntry('image', await MultipartFile.fromFile(imageFile.path, filename: 'donation_image.jpg')),
-      );
-    }
-
-    Response res = await dio.post(
-      ApiUrls.donationUrl,
-      data: formData,
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-
-    if (res.statusCode == 200) {
-      print('نجح الرفع');
-      // donations.add(donation);
-      errorMessage = null;
-    } else {
-      errorMessage = 'فشل في إرسال البيانات';
-    }
-  } catch (e) {
-    errorMessage = 'حدث خطأ أثناء إرسال البيانات: $e';
-    print('الاستثناء هو $e');
-  } finally {
-    isLoading = false;
-    notifyListeners();
-  }
-}*/
+  
 }
 

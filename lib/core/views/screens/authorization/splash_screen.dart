@@ -31,12 +31,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/splash2.jpeg',
+            'assets/images/5_20241014_002615_٠٠٠٤.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
-          const Positioned(
+         /* const Positioned(
             top: 400,
             left: 100,
             child: Text(
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontSize: 30,
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

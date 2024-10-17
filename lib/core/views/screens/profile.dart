@@ -1,75 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:pharmcy/core/views/widgets/stack_widget.dart';
-import 'package:pharmcy/core/views/widgets/text_form.dart';
+import 'package:pharmcy/core/models/user.dart';
+import 'package:pharmcy/core/veiwModel/usrtVm.dart';
+import 'package:pharmcy/core/views/widgets/button.dart';
+import 'package:pharmcy/core/views/widgets/profile_widget.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
-  TextEditingController cityController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
   Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: StackWidgt(
-      hight: 550,
-      my_widget: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-         
-            Container(
-              decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 72, 165, 141),
-                  borderRadius: BorderRadius.circular(100)),
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage:
-                    NetworkImage('https://via.placeholder.com/150'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'صانع/ة التغيير',
-                strutStyle: StrutStyle(fontFamily: 'myfont'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Bio here sothimg like personal info '),
-            ),
-            const SizedBox(height: 16),
-            AppTextForm(
-              controller: cityController,
-              obscure: false,
-              hint: 'enter your city',
-            ),
-            const SizedBox(height: 8),
-            AppTextForm(
-              icon: Icon(Icons.phone),
-              controller: phoneController,
-              obscure: false,
-              hint: 'enter your phone number',
-            ),
-            const SizedBox(height: 8),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Edit Profile'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Logout'),
-                ),
-              ],
-            ),
-          ],
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'الملف الشخصي',
+          style: TextStyle(color: Colors.white),
         ),
+        backgroundColor: const Color(0xff08685a),
       ),
-    ));
+      body: Consumer<UserVm>(
+        builder: (context, userVm, child) {
+          if (userVm.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (userVm.errorMessage != null) {
+            return Center(
+                child: Text(userVm.errorMessage!,
+                    style: TextStyle(color: Colors.red)));
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 70,
+                    ),
+                    buildProfileHeader(userVm),////////////
+                    const SizedBox(height: 30),
+                    Text(
+                      '${userVm.profileInfo['name']}',
+                      style: TextStyle(fontFamily: 'myfont', fontSize: 20),
+                    ),
+                    const SizedBox(height: 20),
+                    ProfileWidget(
+                      text: userVm.profileInfo['bio'] ?? 'لم يتم تحديد وصف',
+                      controller: bioController,
+                      icons: Icons.person,
+                    ),
+                    const SizedBox(height: 20),
+                    ProfileWidget(
+                      text: userVm.profileInfo['phone'] ??
+                          'لم يتم تحديد رقم',
+                      icons: Icons.phone,
+                      controller: phoneController,
+                    ),
+                    const SizedBox(height: 20),
+                    ProfileWidget(
+                      text: userVm.profileInfo['city'] ?? 'لم يتم تحديد مدينة',
+                      icons: Icons.home,
+                      controller: cityController,
+                    ),
+                    const SizedBox(height: 50),
+                    ButtonRounded(
+                      width: 200,
+                      text: 'تعديل',
+                      onTap: () {
+                        Navigator.pushNamed(context, '/updaeProfile');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildProfileHeader(UserVm userVm) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: 60,
+          backgroundImage: userVm.profileInfo['avatar'] != null
+              ? NetworkImage(userVm.profileInfo['avatar'])
+              : AssetImage('assets/images/profile.png') as ImageProvider,
+        ),
+      ],
+    );
   }
 }
+
